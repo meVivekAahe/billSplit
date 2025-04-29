@@ -50,6 +50,15 @@ public class Expense implements Serializable{
     
     @Enumerated(EnumType.STRING)
     private SplitType splitType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payer_id", nullable = false)
+    private User payer;
+
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExpenseShare> splitShares = new ArrayList<>();
+    
+
     
     public Long getId() {
         return id;
@@ -99,6 +108,19 @@ public class Expense implements Serializable{
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+    public User getPayer() {
+        return payer;
+    }
+    public void setPayer(User payer) {
+        this.payer = payer;
+    }
+    public List<ExpenseShare> getSplitShares() {
+        return splitShares;
+    }
+    public void setSplitShares(List<ExpenseShare> splitShares) {
+        this.splitShares = splitShares;
+    }
+    
 
 
 
