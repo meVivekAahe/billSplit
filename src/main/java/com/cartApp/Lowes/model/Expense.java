@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -53,11 +55,14 @@ public class Expense implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payer_id", nullable = false)
+    @JsonManagedReference
     private User payer;
 
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ExpenseShare> splitShares = new ArrayList<>();
     
+    //note to self : the use of @JsonManagedReference And @JsonBackReference  tells Jackson to serialize the forward reference (@JsonManagedReference) but ignore the back reference (@JsonBackReference) during serialization, thus breaking the infinite loop
 
     
     public Long getId() {

@@ -36,13 +36,17 @@ public class ExpenseService implements IExpenseService{
     public Expense createExpense(Expense expense , List<Long> userIds, Long payerId, SplitType splitType) {
 
         // 1. Validate input (e.g., users exist, amounts are positive) i know it's important but i will do this later  . validateExpenseDTO(expenseDTO);
+        if (!userIds.contains(payerId)) {
+            userIds.add(payerId);// Add payerId to userIds if not already present
+        }
         List<User>allParticipents = userRepo.findAllById(userIds);
         User payer = userRepo.findById(payerId).orElseThrow(()->new UserNotFoundException("user not found"));
         expense.setPayer(payer);
         List<ExpenseShare>splits = calculateExpenseShares(expense , allParticipents , splitType);
         expense.setSplitShares(splits);
+        
         return expenseRepo.save(expense);
-    }
+    }   
 
     private List<ExpenseShare> calculateExpenseShares(Expense expense, List<User> allParticipents,
             SplitType splitType) {
@@ -51,8 +55,8 @@ public class ExpenseService implements IExpenseService{
                 List<ExpenseShare>splits = allParticipents.stream().map(user->{
                     ExpenseShare expenseShare = new ExpenseShare();
                     expenseShare.setExpense(expense);
-                    expenseShare.setAmountPerUser(amountPerUser);
                     expenseShare.setUser(user);
+                    expenseShare.setAmountPerUser(amountPerUser);
                     return expenseShare;
                 }).collect(Collectors.toList());
 
