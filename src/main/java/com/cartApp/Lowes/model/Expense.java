@@ -40,15 +40,8 @@ public class Expense implements Serializable{
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable( name = "expense_user",
-    joinColumns = @JoinColumn(name = "expense_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User>users = new HashSet<>();
-
     @OneToMany(mappedBy="expense" ,cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Transaction>transactions = new ArrayList<>();
-
     
     @Enumerated(EnumType.STRING)
     private SplitType splitType;
@@ -106,12 +99,6 @@ public class Expense implements Serializable{
     }
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
-    }
-    public Set<User> getUsers() {
-        return users;
-    }
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
     public User getPayer() {
         return payer;

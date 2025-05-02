@@ -71,12 +71,6 @@ public class ExpenseService implements IExpenseService{
     }
 
     @Override
-    public List<Expense> getAllExpenses() {
-        List<Expense> allExpenses = expenseRepo.findAll();
-        return allExpenses;
-    }
-
-    @Override
     public List<Expense> getGroupExpensesByUser(Long userId) {
         List<Expense>listOfGroupExpensesByAUser  = expenseRepo.findByUsers_IdAndGroupIsNotNull(userId); 
         return listOfGroupExpensesByAUser;
@@ -91,7 +85,7 @@ public class ExpenseService implements IExpenseService{
     }
 
     @Override
-    public List<Expense> getIndividualExpensesByUser(Long userId) {
+    public List<Expense> getNonGroupExpensesByUser (Long userId) {
     return expenseRepo.findByUsers_IdAndGroupIsNull(userId);
     }
 
@@ -104,18 +98,52 @@ public class ExpenseService implements IExpenseService{
 
 
     @Override
-    public void updateExpense(Expense expense) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateExpense'");
+    @Transactional
+    public Expense updateExpense(Expense updateExpenseRequest) {
+
+       // Expense existingExpense = expenseRepo.findById(updateExpenseRequest.getId());
+       //Expense updatedExpense = updateExistingExpense(existingExpense ,updateExpenseRequest);return   expenseRepo.save(updatedExpense);
+
+         return expenseRepo.findById(updateExpenseRequest.getId())
+        .map(existingExpense-> updateExistingExpense(existingExpense, updateExpenseRequest))
+        .map(expenseRepo :: save)
+        .orElseThrow(()->new ExpenseNotFound("Expense not found"));
+    }
+
+    public Expense updateExistingExpense(Expense existingExpense, Expense updatedExpenseData ) {
+        
+        existingExpense.setName(updatedExpenseData.getName());
+        existingExpense.setAmount(updatedExpenseData.getAmount());
+        existingExpense.setDescription(updatedExpenseData.getDescription());
+
+        Set<User>newParicipants = updatedExpenseData.getUsers();
+        List<ExpenseShare>existingExpenseShares = existingExpense.getSplitShares();
+        existingExpenseShares.removeIf(share->!newParicipants.contains(share.getUser()));
+        double amtPerUser = updatedExpenseData.getAmount() / newParicipants.size();
+        
+        for(User user : newParicipants){
+            ExpenseShare share = findShareByUser(existingExpenseShares , user);
+            if(share == null){
+                ExpenseShare updatedExpenseShare = new ExpenseShare();
+                updatedExpenseShare.setExpense(existingExpense);
+                updatedExpenseShare.setUser(user);
+                updatedExpenseShare.setAmountPerUser(amtPerUser);
+                existingExpense.getSplitShares().add(updatedExpenseShare);
+            }else{
+                share.setAmountPerUser(amtPerUser);
+            }
+        }
+        return existingExpense;
     }
 
     @Override
-    public void deleteExpense(Long id) {    
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteExpense'");
+    @Transactional
+    public void deleteExpense(Long id) {   
+        Expense expense = expenseRepo.findById(id).orElseThrow(()-> new ExpenseNotFound("Expense not found")) ;
+        expenseRepo.delete(expense);
     }
 
-    @Override
+    
     @Transactional
     public void addUsersToExpense(Long expenseId, List<Long> userIds) {
         Expense expense = expenseRepo.findById(expenseId).orElseThrow(()->(new ExpenseNotFound("expense not found")));
@@ -125,6 +153,17 @@ public class ExpenseService implements IExpenseService{
         expenseRepo.save(expense);
 
     }
+
+
+    private ExpenseShare findShareByUser(List<ExpenseShare> shares, User user) {
+        for (ExpenseShare share : shares) {
+            if (share.getUser().equals(user)) {
+                return share;
+            }
+        }
+        return null;
+    }
+    
 
 
 }
