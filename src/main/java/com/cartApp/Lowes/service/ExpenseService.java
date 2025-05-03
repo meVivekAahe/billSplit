@@ -116,7 +116,8 @@ public class ExpenseService implements IExpenseService{
         existingExpense.setAmount(updatedExpenseData.getAmount());
         existingExpense.setDescription(updatedExpenseData.getDescription());
 
-        Set<User>newParicipants = updatedExpenseData.getUsers();
+        List<ExpenseShare>newExpenseShares  = updatedExpenseData.getSplitShares();
+        List<User>newParicipants = newExpenseShares.stream().map(ExpenseShare :: getUser).collect(Collectors.toList());
         List<ExpenseShare>existingExpenseShares = existingExpense.getSplitShares();
         existingExpenseShares.removeIf(share->!newParicipants.contains(share.getUser()));
         double amtPerUser = updatedExpenseData.getAmount() / newParicipants.size();
@@ -143,7 +144,7 @@ public class ExpenseService implements IExpenseService{
         expenseRepo.delete(expense);
     }
 
-    
+    /* 
     @Transactional
     public void addUsersToExpense(Long expenseId, List<Long> userIds) {
         Expense expense = expenseRepo.findById(expenseId).orElseThrow(()->(new ExpenseNotFound("expense not found")));
@@ -152,7 +153,7 @@ public class ExpenseService implements IExpenseService{
         usersSet.addAll(listOfUsers);
         expenseRepo.save(expense);
 
-    }
+    } */
 
 
     private ExpenseShare findShareByUser(List<ExpenseShare> shares, User user) {
