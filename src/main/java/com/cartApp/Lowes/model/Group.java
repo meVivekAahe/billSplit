@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "groupsTable")
+@Table(name = "groups_table")
 public class Group implements Serializable{
 
     @Id
@@ -26,8 +26,8 @@ public class Group implements Serializable{
     private Long id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "groupUser")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "groupMember")
+    private Set<User> members = new HashSet<>();
     
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
@@ -50,16 +50,11 @@ public class Group implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Set<User> getUsers() {
-        return users;
+    public Set<User> getMembers() {
+        return members;
     }
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Group(){
-
+    public void setMembers(Set<User> members) {
+        this.members = members;
     }
     public List<Expense> getExpenses() {
         return expenses;
@@ -67,6 +62,9 @@ public class Group implements Serializable{
     public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
     }
-   
 
+    public Group(){
+
+    }
+    
 }

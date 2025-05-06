@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User implements Serializable{
 
     @Id
@@ -24,11 +25,12 @@ public class User implements Serializable{
     private long id;
     private String name;
     private String email;
-    @ManyToMany 
+    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_group",
                        joinColumns = @JoinColumn(name="user_id"),
                        inverseJoinColumns = @JoinColumn(name="group_id"))
-    private Set<Group>groupUser = new HashSet<>();
+    private Set<Group>groupMember = new HashSet<>();
     
     
     @ManyToMany(mappedBy = "users")
@@ -54,19 +56,13 @@ public class User implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-    public Set<Group> getGroups() {
-        return groupUser;
+    public Set<Group> getGroupMember() {
+        return groupMember;
     }
-    public void setGroups(Set<Group> groupUser) {
-        this.groupUser = groupUser;
+    public void setGroupMember(Set<Group> groupMember) {
+        this.groupMember = groupMember;
     }
-
-    public Set<Group> getGroupUser() {
-        return groupUser;
-    }
-    public void setGroupUser(Set<Group> groupUser) {
-        this.groupUser = groupUser;
-    }
+    
     public Set<Expense> getExpenses() {
         return expenses;
     }
@@ -76,7 +72,6 @@ public class User implements Serializable{
     public User(){
 
     }
-
 
     
 
