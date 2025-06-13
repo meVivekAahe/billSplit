@@ -109,7 +109,6 @@ public class GroupService implements IGroupService {
             }
         }
         return expenseBalances;
-
     }
 
     @Override

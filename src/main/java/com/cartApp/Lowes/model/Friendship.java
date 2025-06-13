@@ -36,6 +36,7 @@ public class Friendship implements Serializable{
 
     private LocalDateTime requestDate;
     private LocalDateTime approvalDate;
+    
 
     public Long getId() {
         return id;

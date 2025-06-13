@@ -55,7 +55,7 @@ public class UserService implements IUserService{
 
     @Override
     public List<User> getFriends(Long userId) {
-        // TODO Auto-generated method stub
+        
         throw new UnsupportedOperationException("Unimplemented method 'getFriends'");
     }
 

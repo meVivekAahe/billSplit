@@ -43,13 +43,13 @@ public class UserController {
 
     @GetMapping("/{userId}/friends")
     public List<User>getFriends(@PathVariable Long userId){
-
+        return userService.getFriends(userId);
     }
 
     // Send friend request
     @PostMapping("/{userId}/friends/requests")
     public ResponseEntity<?> sendFriendRequest(@PathVariable Long userId, @RequestBody FriendRequestDto request) {
-        // ...
+        
     }
 
     // Accept friend request
@@ -61,7 +61,7 @@ public class UserController {
     @GetMapping("/{userId}/friends/expenses")
     public List<Expense>getExpensesWithFriends(@PathVariable Long userId){
         
-    }
+    }   
 
 
 
