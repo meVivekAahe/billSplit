@@ -59,6 +59,28 @@ public class UserService implements IUserService{
         throw new UnsupportedOperationException("Unimplemented method 'getFriends'");
     }
 
+    public void sendFriendRequest(Long senderId, Long receiverId) {
+    // 1. Validate users exist
+    // 2. Check if a Friendship already exists (any status) between sender and receiver
+    // 3. If not, create new Friendship with status PENDING and set requestDate
+    // 4. Save the entity
+    }
+
+    public void respondToFriendRequest(Long receiverId, Long friendshipId, boolean accept) {
+    // 1. Validate friendship exists and receiver is correct
+    // 2. If accept: set status to ACCEPTED, set approvalDate
+    // 3. If reject: set status to REJECTED, set approvalDate
+    // 4. Save the entity
+    }
+
+    public List<Friendship> getPendingRequests(Long userId) {
+    // 1. Find all friendships where friend is userId and status is PENDING
+    // 2. Return the list
+    }
+
+
+
+
     @Override
     public List<Expense> getExpensesWithFriend(Long userId, Long friendId) {
         // TODO Auto-generated method stub

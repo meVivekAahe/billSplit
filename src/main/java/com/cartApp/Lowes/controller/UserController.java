@@ -44,7 +44,6 @@ public class UserController {
     @GetMapping("/{userId}/friends")
     public List<User>getFriends(@PathVariable Long userId){
         return userService.getFriends(userId);
-        
     }
 
     //https://www.perplexity.ai/search/juts-want-to-confrim-do-you-ha-5EOJFVlrR3Csgslsv2T9jQ
