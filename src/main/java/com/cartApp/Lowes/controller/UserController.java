@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody UserDto userDto){
         User user = new User();
         user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
+        user.setEmail(userDto.getEmail());  
         User createdUser= userService.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
@@ -44,6 +44,7 @@ public class UserController {
     @GetMapping("/{userId}/friends")
     public List<User>getFriends(@PathVariable Long userId){
         return userService.getFriends(userId);
+        
     }
 
     //https://www.perplexity.ai/search/juts-want-to-confrim-do-you-ha-5EOJFVlrR3Csgslsv2T9jQ
