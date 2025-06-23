@@ -46,7 +46,7 @@ public class UserController {
         return userService.getFriends(userId);
     }
 
-    //https://www.perplexity.ai/search/juts-want-to-confrim-do-you-ha-5EOJFVlrR3Csgslsv2T9jQ
+    
     // Send friend request
     @PostMapping("/{userId}/friends/requests")
     public ResponseEntity<?> sendFriendRequest(@PathVariable Long userId, @RequestBody FriendRequestDto request) {
