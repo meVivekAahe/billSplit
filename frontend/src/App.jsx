@@ -7,6 +7,8 @@ import GroupList from './components/groups/GroupList';
 //import { expenseService } from './services/expenseService';
 //import { groupService } from './services/groupService';
 import AddExpenseModal from './components/expenses/AddExpenseModal';
+import './app.css';
+
 
 
 const App = () => {
