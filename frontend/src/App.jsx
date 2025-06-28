@@ -17,7 +17,7 @@ import GroupList from './components/groups/GroupList';
 import FriendList from './components/friends/FriendList';
 import AddExpenseModal from './components/expenses/AddExpenseModal';
 
-import './app.css';
+import './App.css';
 
 const App = () => {
   // activeTab is kept to manage the visual highlighting in the Navigation component
