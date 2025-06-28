@@ -1,1 +1,26 @@
+/* src/index.css */
+
+/* Universal Box-Sizing for consistent layout */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Reset default margins and padding on html and body */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; 
+  width: 100%;  
+  overflow-x: hidden; 
+  background-color: transparent; 
+}
+
+/* Ensure the root div for React takes full height/width */
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex; 
+  flex-direction: column; 
+}
+
 @import "tailwindcss";
