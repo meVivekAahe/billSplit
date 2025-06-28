@@ -14,7 +14,7 @@ import Navigation from './components/common/Navigation';
 import DashboardView from './components/dashboard/DashboardView';
 import ExpenseList from './components/expenses/ExpenseList';
 import GroupList from './components/groups/GroupList';
-import FriendList from './components/friends/FriendList';
+import FriendList from './components/friends/friendList';
 import AddExpenseModal from './components/expenses/AddExpenseModal';
 
 import './App.css';
