@@ -93,9 +93,9 @@ const ExpenseSyncLanding = () => {
     },
     {
       name: "Harsh ",
-      role: "University Student",
-      avatar: "🎓",
-      text: "Our college project group loves this app. It's so much easier than keeping track of receipts and calculating splits manually."
+      role: "Tech Professional",
+      avatar: "💻",
+      text: "It's so much easier than keeping track of receipts and calculating splits manually."
     }
   ];
 
