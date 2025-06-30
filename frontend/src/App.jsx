@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Import routing components and useLocation hook
 // Ensure 'useLocation' is here
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation  } from 'react-router-dom';
 
 // Corrected import path and component name for your landing page
 // This assumes your landing page component is named ExpenseSyncLanding
@@ -16,6 +16,8 @@ import ExpenseList from './components/expenses/ExpenseList';
 import GroupList from './components/groups/GroupList';
 import FriendList from './components/friends/friendList';
 import AddExpenseModal from './components/expenses/AddExpenseModal';
+
+import RegisterPage from './pages/RegisterPage';
 
 import './App.css';
 
@@ -128,6 +130,8 @@ const App = () => {
         <Routes>
           {/* Public Route for the Landing Page */}
           <Route path="/" element={<ExpenseSyncLanding />} />
+          <Route path="/dashboard" element={<DashboardView />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected Routes - only accessible if isAuthenticated is true */}
           {/* Pass isAuthenticated and loading state to ProtectedRoute */}

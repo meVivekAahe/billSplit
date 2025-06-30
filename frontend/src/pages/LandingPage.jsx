@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, X, DollarSign, Users, Calculator, Smartphone, Shield, Zap, ChevronRight, Star, Check } from 'lucide-react';
 
 const ExpenseSyncLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
+  const navigate = useNavigate();
+
+   const typewriterTexts = [
+      "Try now in guest mode - no signup required!",
+      "Split bills instantly with friends",
+      "Track expenses without registration",
+      "Experience seamless expense sharing"
+    ];
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -20,6 +29,19 @@ const ExpenseSyncLanding = () => {
         window.removeEventListener('resize', closeMenuOnResize);
     }
   }, []);
+
+
+  const navigateToGuestMode = () => {
+      // This will be implemented to redirect to guest dashboard
+      console.log('Navigating to guest mode...');
+      navigate('/dashboard');
+    };
+
+    const navigateToRegister = () => {
+      // This will redirect to registration page
+      console.log('Navigating to register...');
+       navigate('/pages');
+    };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,6 +99,24 @@ const ExpenseSyncLanding = () => {
       description: "Travel abroad? No problem. Support for multiple currencies with real-time exchange rates."
     }
   ];
+
+  const guestModeFeatures = [
+      {
+        icon: <Users className="w-6 h-6" />,
+        title: "Create Sample Groups",
+        description: "Try creating groups with demo friends"
+      },
+      {
+        icon: <Calculator className="w-6 h-6" />,
+        title: "Add Mock Expenses",
+        description: "Experience expense splitting with sample data"
+      },
+      {
+        icon: <DollarSign className="w-6 h-6" />,
+        title: "Test All Features",
+        description: "Full functionality with temporary data"
+      }
+    ];
 
   const testimonials = [
     {
@@ -182,15 +222,52 @@ const ExpenseSyncLanding = () => {
             Keep your relationships healthy and your finances organized.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-              Start Splitting for Free
+
+            <button onClick={navigateToGuestMode} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+              Try Guest Mode Now !
             </button>
-            <button className="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300">
-              Watch Demo
+
+            <button onClick={navigateToRegister} className="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300">
+              Get Started Free
             </button>
           </div>
         </div>
       </section>
+
+       <section id="guest-mode" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-green-900/20 to-emerald-900/20">
+              <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                    Try Without Signing Up!
+                  </h2>
+                  <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+                    Experience all ExpenseSync features with our guest mode. No registration required!
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                  {guestModeFeatures.map((feature, index) => (
+                    <div
+                      key={index}
+                      className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl border border-green-500/30 hover:border-green-500/50 transition-all duration-300 text-center"
+                    >
+                      <div className="text-green-400 mb-4 flex justify-center">{feature.icon}</div>
+                      <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                      <p className="text-slate-300 text-sm">{feature.description}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-center">
+                  <button
+                    onClick={navigateToGuestMode}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                  >
+                    Start Guest Mode Now
+                  </button>
+                </div>
+              </div>
+            </section>
 
       {/* Features Section */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
