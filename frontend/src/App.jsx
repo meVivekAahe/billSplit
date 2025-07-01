@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 // Import routing components and useLocation hook
-// Ensure 'useLocation' is here
 import { Routes, Route, Navigate, useLocation  } from 'react-router-dom';
 
-// Corrected import path and component name for your landing page
-// This assumes your landing page component is named ExpenseSyncLanding
-// and the file is located at src/pages/LandingPage.jsx (or .tsx)
+// Import your components
 import ExpenseSyncLanding from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import GuestDashboardView from './components/dashboard/GuestDashboardView';
 
 // Import your existing components
 import Header from './components/common/Header';
@@ -16,8 +16,6 @@ import ExpenseList from './components/expenses/ExpenseList';
 import GroupList from './components/groups/GroupList';
 import FriendList from './components/friends/friendList';
 import AddExpenseModal from './components/expenses/AddExpenseModal';
-
-import RegisterPage from './pages/RegisterPage';
 
 import './App.css';
 
@@ -35,16 +33,13 @@ const App = () => {
   const openAddExpenseModal = () => setShowAddExpenseModal(true);
   const closeAddExpenseModal = () => setShowAddExpenseModal(false);
 
-  // *** IMPORTANT: This will be replaced by actual authentication logic later ***
-  // For now, setting it to false will show the LandingPage by default.
-  // Set to true (e.g., useState(true)) to temporarily see dashboard and other app content.
+  // Authentication state - set to false to show landing page by default
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // useLocation hook to get current path for Navigation component
   const location = useLocation();
 
   // Effect to update activeTab based on current route path
-  // This ensures the Navigation component highlights the correct tab
   useEffect(() => {
     const path = location.pathname;
     if (path === '/dashboard') {
@@ -59,17 +54,14 @@ const App = () => {
       // For landing page or other unauthenticated paths, no tab should be active
       setActiveTab('');
     }
-  }, [location.pathname, isAuthenticated]); // Re-run when path changes or auth status changes
+  }, [location.pathname, isAuthenticated]);
 
   // Initial load effect for data and potential auth check
   useEffect(() => {
     const checkAuthAndLoadData = async () => {
         setLoading(true);
-        // Simulate authentication check (e.g., checking for a token)
-        // For actual implementation, this would involve calling your backend auth service
+        // Simulate authentication check
         // For now, it defaults to false, so the landing page is shown.
-        // Uncomment the line below to simulate a logged-in user and see the dashboard.
-        // setIsAuthenticated(true);
 
         // Load mock data
         try {
@@ -91,7 +83,6 @@ const App = () => {
             setBalances({ total: 12.50, owe: 45.25, owed: 32.75 });
         } catch (error) {
             console.error('Error loading data:', error);
-            // Handle error (show notification, etc.)
         } finally {
             setLoading(false);
         }
@@ -100,41 +91,45 @@ const App = () => {
   }, []);
 
   // Helper component for protected routes
-  // This component needs access to isAuthenticated and loading from App's state
   const ProtectedRoute = ({ children, isAuthenticated, loading }) => {
-    if (loading) { // Show loading while auth check is in progress
+    if (loading) {
       return <div className="text-center py-8">Loading application...</div>;
     }
-    // If not authenticated, redirect to the landing page
     return isAuthenticated ? children : <Navigate to="/" replace />;
+  };
+
+  // Check if current route should show header and navigation
+  const shouldShowNavigation = () => {
+    const publicRoutes = ['/', '/login', '/register', '/guest-dashboard'];
+    return !publicRoutes.includes(location.pathname) && isAuthenticated;
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Render Header and Navigation only if authenticated */}
-      {isAuthenticated && (
+      {/* Render Header and Navigation only for authenticated routes */}
+      {shouldShowNavigation() && (
         <>
           <Header />
-          {/* Navigation should use react-router-dom's Link components internally
-              to navigate between routes, but activeTab is for visual highlighting. */}
-          <Navigation activeTab={activeTab} onTabChange={() => { /* This prop might become less critical
-                                                                     if Navigation components directly
-                                                                     use Link and useLocation for active state */ }} />
+          <Navigation activeTab={activeTab} onTabChange={() => {}} />
         </>
       )}
 
-      <main className={isAuthenticated
+      <main className={shouldShowNavigation()
               ? "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" // Classes for authenticated content
-              : "w-full h-full p-0 m-0" // Classes for landing page (full width/height, no padding/margin)
+              : "w-full h-full p-0 m-0" // Classes for public pages (full width/height, no padding/margin)
             }>
         <Routes>
-          {/* Public Route for the Landing Page */}
+          {/* Public Routes */}
           <Route path="/" element={<ExpenseSyncLanding />} />
-          <Route path="/dashboard" element={<DashboardView />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/guest-dashboard" element={
+            <GuestDashboardView
+              onSignUpClick={() => window.location.href = '/register'}
+            />
+          } />
 
           {/* Protected Routes - only accessible if isAuthenticated is true */}
-          {/* Pass isAuthenticated and loading state to ProtectedRoute */}
           <Route path="/dashboard" element={
             <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
               <DashboardView
@@ -161,20 +156,20 @@ const App = () => {
             </ProtectedRoute>
           } />
 
-          {/* Modal can be rendered conditionally based on state, outside of Routes */}
-          {showAddExpenseModal && isAuthenticated && (
-            <AddExpenseModal
-              onClose={closeAddExpenseModal}
-              onSave={(newExpense) => {
-                setExpenses(prev => [newExpense, ...prev]);
-                closeAddExpenseModal();
-              }}
-            />
-          )}
-
-          {/* Redirect any unmatched routes to the home page (or a 404 page) */}
+          {/* Redirect any unmatched routes to the home page */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
+        {/* Modal can be rendered conditionally based on state, outside of Routes */}
+        {showAddExpenseModal && isAuthenticated && (
+          <AddExpenseModal
+            onClose={closeAddExpenseModal}
+            onSave={(newExpense) => {
+              setExpenses(prev => [newExpense, ...prev]);
+              closeAddExpenseModal();
+            }}
+          />
+        )}
       </main>
     </div>
   );

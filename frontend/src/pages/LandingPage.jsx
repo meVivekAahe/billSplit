@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, X, DollarSign, Users, Calculator, Smartphone, Shield, Zap, ChevronRight, Star, Check } from 'lucide-react';
+// REMOVED: import { useNavigate } from 'react-router-dom';
+import { Menu, X, DollarSign, Users, Calculator, Smartphone, Shield, Zap, Star, Check } from 'lucide-react';
 
 const ExpenseSyncLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
-  const navigate = useNavigate();
-
-   const typewriterTexts = [
-      "Try now in guest mode - no signup required!",
-      "Split bills instantly with friends",
-      "Track expenses without registration",
-      "Experience seamless expense sharing"
-    ];
+  // REMOVED: const navigate = useNavigate();
+  // REMOVED: All navigation handler functions. Navigation is now handled by <a> tags.
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -30,18 +24,6 @@ const ExpenseSyncLanding = () => {
     }
   }, []);
 
-
-  const navigateToGuestMode = () => {
-      // This will be implemented to redirect to guest dashboard
-      console.log('Navigating to guest mode...');
-      navigate('/dashboard');
-    };
-
-    const navigateToRegister = () => {
-      // This will redirect to registration page
-      console.log('Navigating to register...');
-       navigate('/pages');
-    };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -167,12 +149,12 @@ const ExpenseSyncLanding = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <button className="text-purple-300 hover:text-white px-4 py-2 rounded-full transition-all duration-300">
+              <a href="/login" role="button" className="text-purple-300 hover:text-white px-4 py-2 rounded-full transition-all duration-300">
                 Log In
-              </button>
-              <button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-5 py-2 rounded-full transition-all duration-300 transform hover:scale-105">
+              </a>
+              <a href="/register" role="button" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-5 py-2 rounded-full transition-all duration-300 transform hover:scale-105">
                 Register
-              </button>
+              </a>
             </div>
 
             {/* Mobile menu button */}
@@ -194,12 +176,12 @@ const ExpenseSyncLanding = () => {
               <a href="#pricing" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 hover:text-purple-400 rounded-md">Pricing</a>
               <div className="border-t border-slate-700 my-3"></div>
               <div className="flex justify-center items-center space-x-4">
-                <button className="flex-1 border border-purple-500 text-purple-300 px-4 py-2 rounded-full">
+                <a href="/login" role="button" className="flex-1 border border-purple-500 text-purple-300 px-4 py-2 rounded-full">
                     Log In
-                </button>
-                <button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full">
+                </a>
+                <a href="/register" role="button" className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full">
                     Register
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -223,13 +205,13 @@ const ExpenseSyncLanding = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
 
-            <button onClick={navigateToGuestMode} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+            <a href="/guest-dashboard" role="button" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
               Try Guest Mode Now !
-            </button>
+            </a>
 
-            <button onClick={navigateToRegister} className="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300">
+            <a href="/register" role="button" className="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300">
               Get Started Free
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -259,12 +241,13 @@ const ExpenseSyncLanding = () => {
                 </div>
 
                 <div className="text-center">
-                  <button
-                    onClick={navigateToGuestMode}
+                  <a
+                    href="/guest-dashboard"
+                    role="button"
                     className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                   >
                     Start Guest Mode Now
-                  </button>
+                  </a>
                 </div>
               </div>
             </section>
@@ -381,9 +364,9 @@ const ExpenseSyncLanding = () => {
                     <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-2" />Mobile app</li>
                   </ul>
               </div>
-              <button className="w-full border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-full transition-all duration-300">
+              <a href="/register" role="button" className="w-full text-center border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white py-3 rounded-full transition-all duration-300">
                 Get Started
-              </button>
+              </a>
             </div>
 
             <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm p-8 rounded-2xl border border-purple-500/50 relative flex flex-col">
@@ -401,9 +384,9 @@ const ExpenseSyncLanding = () => {
                     <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-2" />Priority support</li>
                 </ul>
               </div>
-              <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+              <a href="/register" role="button" className="w-full text-center bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
                 Upgrade Now
-              </button>
+              </a>
             </div>
           </div>
         </div>
