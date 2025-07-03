@@ -7,6 +7,7 @@ import ExpenseSyncLanding from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import GuestDashboardView from './components/dashboard/GuestDashboardView';
+import UpiPaymentForm from "./components/dashboard/UpiPaymentForm";
 
 // Import your existing components
 import Header from './components/common/Header';
@@ -123,6 +124,7 @@ const App = () => {
           <Route path="/" element={<ExpenseSyncLanding />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/settle-up" element={<UpiPaymentForm />} />
           <Route path="/guest-dashboard" element={
             <GuestDashboardView
               onSignUpClick={() => window.location.href = '/register'}

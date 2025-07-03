@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import BalanceCard from './BalanceCard';
 import { Plus, Users, Receipt, PieChart, Settings, Bell, Search, Filter, TrendingUp, Calendar, MapPin } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+
 
 const GuestDashboardView = ({ onSignUpClick }) => {
-  const [activeTab, setActiveTab] = useState('overview');
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('overview');
 
   // Enhanced dummy data for guest experience
   const guestData = {
@@ -233,7 +236,9 @@ const GuestDashboardView = ({ onSignUpClick }) => {
             <Users size={18} />
             <span>Create Group</span>
           </button>
-          <button className="bg-white text-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-50 border transition-colors">
+          <button
+            onClick={() => navigate("/settle-up")}
+            className="bg-white text-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-50 border transition-colors">
             <Receipt size={18} />
             <span>Settle Up</span>
           </button>
