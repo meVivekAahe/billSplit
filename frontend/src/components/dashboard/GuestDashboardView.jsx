@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import BalanceCard from './BalanceCard';
+
 import { Plus, Users, Receipt, PieChart, Settings, Bell, Search, Filter, TrendingUp, Calendar, MapPin } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 
-import React, { useState } from 'react';
-import { Plus, Users, Receipt, PieChart, Settings, Bell, Search, Filter, TrendingUp, ChevronDown, ArrowUpRight, ArrowDownLeft, Dot } from 'lucide-react';
 
 // --- DUMMY DATA (Indian Context) ---
 const guestData = {
@@ -154,27 +152,57 @@ const OverviewPage = ({ data, onSignUpClick }) => (
             </button>
         </div>
 
-        {/* Balance Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <BalanceCard title="Total Balance" amount={data.balances.total} color="text-green-600" />
-            <BalanceCard title="You Owe" amount={data.balances.owe} color="text-red-600" />
-            <BalanceCard title="You Are Owed" amount={data.balances.owed} color="text-teal-600" />
-        </div>
-
-        {/* Monthly Stats */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">This Month's Spending</h3>
-            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-                <DonutChart stats={data.monthlyStats} />
-                <div className="w-full space-y-4">
-                    {data.monthlyStats.categoriesBreakdown.map((cat, index) => (
-                        <div key={index}>
-                            <div className="flex justify-between mb-1">
-                                <span className="text-sm font-medium text-gray-700">{cat.category}</span>
-                                <span className="text-sm font-medium text-gray-600">₹{cat.amount.toLocaleString('en-IN')}</span>
+        {/* Money Flow Summary */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Outstanding Balances */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <Receipt className="w-5 h-5 mr-2 text-teal-600" />
+                    Outstanding Balances
+                </h3>
+                <div className="space-y-3">
+                    {data.friends.filter(f => f.balance !== 0).map(friend => (
+                        <div key={friend.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center font-bold text-teal-700 text-sm">
+                                    {friend.avatar}
+                                </div>
+                                <span className="font-medium text-gray-900">{friend.name}</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div className={`${cat.color} h-2 rounded-full`} style={{ width: `${cat.percentage}%` }}></div>
+                            <div className="text-right">
+                                <span className={`font-semibold ${friend.balance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                    {friend.balance > 0 ? '+' : '−'}₹{Math.abs(friend.balance).toLocaleString('en-IN')}
+                                </span>
+                                <p className="text-xs text-gray-500">
+                                    {friend.balance > 0 ? 'owes you' : 'you owe'}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Active Groups */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <Users className="w-5 h-5 mr-2 text-teal-600" />
+                    Active Groups
+                </h3>
+                <div className="space-y-3">
+                    {data.groups.slice(0, 3).map(group => (
+                        <div key={group.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center space-x-3">
+                                <div className="text-xl">{group.image}</div>
+                                <div>
+                                    <span className="font-medium text-gray-900">{group.name}</span>
+                                    <p className="text-xs text-gray-500">{group.members} members</p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <span className={`font-semibold ${group.yourBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                    {group.yourBalance >= 0 ? '+' : '−'}₹{Math.abs(group.yourBalance).toLocaleString('en-IN')}
+                                </span>
+                                <p className="text-xs text-gray-500">{group.lastActivity}</p>
                             </div>
                         </div>
                     ))}
@@ -182,16 +210,64 @@ const OverviewPage = ({ data, onSignUpClick }) => (
             </div>
         </div>
 
-         {/* Recent Activity */}
+        {/* Recent Expenses */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-gray-900">Recent Activity</h3>
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <TrendingUp className="w-5 h-5 mr-2 text-teal-600" />
+                    Recent Expenses
+                </h3>
                 <button className="text-teal-600 hover:text-teal-700 text-sm font-medium">
                     View All
                 </button>
             </div>
-            <div className="space-y-4">
-                {data.activities.slice(0, 3).map(activity => <ActivityItem key={activity.id} activity={activity} />)}
+            <div className="space-y-3">
+                {data.expenses.slice(0, 4).map(expense => (
+                    <div key={expense.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex-1">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+                                <div>
+                                    <span className="font-medium text-gray-900">{expense.description}</span>
+                                    <p className="text-xs text-gray-500">
+                                        {new Date(expense.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} •
+                                        Paid by {expense.paidBy} • {expense.category}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <span className="font-semibold text-gray-900">₹{expense.amount.toLocaleString('en-IN')}</span>
+                            <p className={`text-xs ${expense.settled ? 'text-green-600' : 'text-yellow-600'}`}>
+                                {expense.settled ? 'Settled' : 'Pending'}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        {/* Monthly Spending Insights */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <PieChart className="w-5 h-5 mr-2 text-teal-600" />
+                This Month's Spending Breakdown
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {data.monthlyStats.categoriesBreakdown.map((cat, index) => (
+                    <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center ${cat.color}`}>
+                            <span className="text-white font-bold text-lg">{cat.percentage}%</span>
+                        </div>
+                        <h4 className="font-medium text-gray-900 text-sm">{cat.category}</h4>
+                        <p className="text-gray-600 font-semibold">₹{cat.amount.toLocaleString('en-IN')}</p>
+                    </div>
+                ))}
+            </div>
+            <div className="mt-4 p-4 bg-teal-50 rounded-lg">
+                <p className="text-sm text-teal-800">
+                    <span className="font-semibold">Total Monthly Spending:</span> ₹{data.monthlyStats.totalSpent.toLocaleString('en-IN')}
+                </p>
             </div>
         </div>
     </div>
@@ -341,7 +417,7 @@ const ActivityPage = ({ activities }) => (
 
 // --- MAIN APP COMPONENT ---
 
-export default function App() {
+export default function GuestDashboardView() {
     const [activeTab, setActiveTab] = useState('overview');
 
     const onSignUpClick = () => {
@@ -436,4 +512,4 @@ export default function App() {
 }
 
 
-export default GuestDashboardView;
+//export default GuestDashboardView;
