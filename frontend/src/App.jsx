@@ -38,7 +38,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const handleAddFriend = async (friendData) => {
     try {
-      const response = await fetch('/api/friends/add', {
+      const response = await fetch('/api/friends/addFriend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +176,10 @@ const App = () => {
           } />
           <Route path="/friends" element={
             <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
-              <FriendList friends={friends} />
+              <FriendList friends={friends}
+              onAddFriend={handleAddFriend}
+              />
+
             </ProtectedRoute>
           } />
           <Route path="/expenses" element={
