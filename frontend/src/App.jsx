@@ -29,7 +29,6 @@ const App = () => {
   const [balances, setBalances] = useState({ total: 0, owe: 0, owed: 0 });
   //const [loading, setLoading] = useState(true); // Loading state for initial data/auth check
   const [friends, setFriends] = useState([]);
-
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const openAddExpenseModal = () => setShowAddExpenseModal(true);
   const closeAddExpenseModal = () => setShowAddExpenseModal(false);
@@ -37,7 +36,34 @@ const App = () => {
   // Authentication state - set to false to show landing page by default
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [loading, setLoading] = useState(false);
+  const handleAddFriend = async (friendData) => {
+    try {
+      const response = await fetch('/api/friends/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add your auth headers here if needed
+          // 'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: friendData.name,
+          email: friendData.email
+        })
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to add friend');
+      }
+
+      // Add the new friend to your existing friends state
+      const newFriend = await response.json();
+      setFriends(prev => [...prev, newFriend]);
+
+    } catch (error) {
+      console.error('Error adding friend:', error);
+      throw error; // This will be caught and displayed by the modal
+    }
+  };
   // useLocation hook to get current path for Navigation component
   const location = useLocation();
 
