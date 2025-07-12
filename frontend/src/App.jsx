@@ -27,7 +27,7 @@ const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [groups, setGroups] = useState([]);
   const [balances, setBalances] = useState({ total: 0, owe: 0, owed: 0 });
-  const [loading, setLoading] = useState(true); // Loading state for initial data/auth check
+  //const [loading, setLoading] = useState(true); // Loading state for initial data/auth check
   const [friends, setFriends] = useState([]);
 
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
@@ -35,7 +35,8 @@ const App = () => {
   const closeAddExpenseModal = () => setShowAddExpenseModal(false);
 
   // Authentication state - set to false to show landing page by default
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // useLocation hook to get current path for Navigation component
   const location = useLocation();
