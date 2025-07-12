@@ -12,7 +12,7 @@ import com.cartApp.Lowes.dto.ExpenseDto;
 import com.cartApp.Lowes.model.Expense;
 import com.cartApp.Lowes.model.Group;
 import com.cartApp.Lowes.repo.GroupRepo;
-import com.cartApp.Lowes.service.ExpenseService;
+import com.cartApp.Lowes.service.ExpenseServiceImpl;
 
 @RestController
 @RequestMapping("/expenses")
@@ -22,7 +22,7 @@ public class ExpenseController {
     GroupRepo groupRepo;
 
     @Autowired
-    ExpenseService expenseService;
+    ExpenseServiceImpl expenseService;
 
     @PostMapping("/addExpense")
     public ResponseEntity<Expense>createExpense(@RequestBody ExpenseDto expenseDto){

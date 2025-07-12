@@ -22,7 +22,7 @@ public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String email;
     
@@ -38,7 +38,7 @@ public class User implements Serializable{
     private Set<Expense> expenses = new HashSet<>();
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public void setId(long id) {

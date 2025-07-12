@@ -2,55 +2,16 @@ package com.cartApp.Lowes.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.cartApp.Lowes.model.Transaction;
 
-import jakarta.websocket.server.ServerEndpoint;
+public interface TransactionService {
 
-@Service
-public class TransactionService implements ITransactionService{
-
-    @Override
-    public Transaction createTransaction(Transaction transaction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTransaction'");
-    }
-
-    @Override
-    public Transaction getTransactionById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionById'");
-    }
-
-    @Override
-    public List<Transaction> getAllTransactions() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTransactions'");
-    }
-
-    @Override
-    public Transaction geTransactionsByExpense(Long expenseId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'geTransactionsByExpense'");
-    }
-
-    @Override
-    public Transaction getTransactionsByUser(Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionsByUser'");
-    }
-
-    @Override
-    public void updateTransaction(Transaction transaction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateTransaction'");
-    }
-
-    @Override
-    public void deleteTransaction(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTransaction'");
-    }
+    Transaction createTransaction(Transaction transaction);
+    Transaction getTransactionById(Long id);
+    List<Transaction>getAllTransactions();
+    Transaction geTransactionsByExpense(Long expenseId);
+    Transaction getTransactionsByUser(Long userId);
+    void updateTransaction(Transaction transaction);
+    void deleteTransaction(Long id); 
 
 }

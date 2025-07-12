@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cartApp.Lowes.dto.UserDto;
 import com.cartApp.Lowes.model.Expense;
 import com.cartApp.Lowes.model.User;
-import com.cartApp.Lowes.service.UserService;
+import com.cartApp.Lowes.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     @GetMapping
     public List<User>getAllUsers(){
         return userService.getAllUsers();
@@ -37,7 +36,6 @@ public class UserController {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());  
         User createdUser= userService.createUser(user);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
