@@ -70,21 +70,21 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public List<Expense> getGroupExpensesByUser(Long userId) {
-        List<Expense>listOfGroupExpensesByAUser  = expenseRepo.findByUsers_IdAndGroupIsNotNull(userId); 
+        List<Expense>listOfGroupExpensesByAUser  = expenseRepo.findByParticipants_IdAndGroupIsNotNull(userId);
         return listOfGroupExpensesByAUser;
     }
 
     @Override
     public List<Expense> getAllExpensesByUser(Long userId) {
         List<Expense> allExpenses = new ArrayList<>();
-        allExpenses.addAll(expenseRepo.findByUsers_IdAndGroupIsNotNull(userId));
-        allExpenses.addAll(expenseRepo.findByUsers_IdAndGroupIsNull(userId));
+        allExpenses.addAll(expenseRepo.findByParticipants_IdAndGroupIsNotNull(userId));
+        allExpenses.addAll(expenseRepo.findByParticipants_IdAndGroupIsNull(userId));
         return allExpenses;
     }
 
     @Override
     public List<Expense> getNonGroupExpensesByUser (Long userId) {
-    return expenseRepo.findByUsers_IdAndGroupIsNull(userId);
+    return expenseRepo.findByParticipants_IdAndGroupIsNull(userId);
     }
 
 

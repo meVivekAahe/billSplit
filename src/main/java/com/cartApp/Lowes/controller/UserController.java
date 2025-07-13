@@ -2,6 +2,9 @@ package com.cartApp.Lowes.controller;
 
 import java.util.List;
 
+import com.cartApp.Lowes.dto.AddFriendRequestDto;
+import com.cartApp.Lowes.dto.InviteRequestDto;
+import com.cartApp.Lowes.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +23,14 @@ import com.cartApp.Lowes.model.User;
 import com.cartApp.Lowes.service.UserServiceImpl;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+    SendEmailService sendEmailService;
+
     @GetMapping
     public List<User>getAllUsers(){
         return userService.getAllUsers();
@@ -44,7 +50,7 @@ public class UserController {
         return userService.getFriends(userId);
     }
 
-    
+    /*
     // Send friend request
     @PostMapping("/{userId}/friends/requests")
     public ResponseEntity<?> sendFriendRequest(@PathVariable Long userId, @RequestBody FriendRequestDto request) {
@@ -60,7 +66,28 @@ public class UserController {
     @GetMapping("/{userId}/friends/expenses")
     public List<Expense>getExpensesWithFriends(@PathVariable Long userId){
         
-    }   
+    }
+
+     */
+
+    @PostMapping("/invite")
+    public ResponseEntity<?>sendInvite(@RequestBody InviteRequestDto inviteRequest){
+        sendEmailService.sendEmail(inviteRequest.getEmail(),inviteRequest.getSubject(), inviteRequest.getBody());
+        return ResponseEntity.ok("Invite sent");
+    }
+
+    @PostMapping("/addFriend")
+    public ResponseEntity<?>addFriend(@RequestBody AddFriendRequestDto addFriendRequestDto){
+        try{
+            // userService.addFriend(userId , addFriendRequestDto);
+            sendEmailService.sendEmail(addFriendRequestDto.getEmail(), "Test Subject", "Test Body");
+            return ResponseEntity.ok("Friend added or invite sent successfully.");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add friend or send invite.");
+
+        }
+
+    }
 
 
 

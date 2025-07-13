@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FriendItem from './FriendItem';
 import AddFriendModal from './AddFriendModal';
 
-const FriendList = ({ friends, onAddFriend }) => {
+  const FriendList = ({ friends, onAddFriend }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddFriend = async (friendData) => {
@@ -14,14 +14,22 @@ const FriendList = ({ friends, onAddFriend }) => {
   if (!friends || friends.length === 0) {
     return (
       <>
-        <div className="text-center py-8 px-4">
-          <p className="text-gray-500 text-sm sm:text-base">No friends added yet.</p>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm sm:text-base"
-          >
-            Add Friend
-          </button>
+        <div className="text-center py-12 px-4">
+          <div className="max-w-md mx-auto">
+            <div className="mb-6">
+              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No friends added yet</h3>
+            <p className="text-gray-500 text-sm mb-6">Add friends and start splitting expenses together!</p>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium"
+            >
+              Add Friend
+            </button>
+          </div>
         </div>
 
         <AddFriendModal

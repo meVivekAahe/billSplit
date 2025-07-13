@@ -125,14 +125,15 @@ public class UserServiceImpl implements UserService {
         if (dto.getEmail() != null) {
             return userRepository.findByEmail(dto.getEmail()).orElse(null);
         }
+        /*
         if (dto.getPhoneNumber() != null) {
             return userRepository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
-        }
+        }*/
         throw new IllegalArgumentException("No identification provided");
     }
 
     private double calculateBalanceBetweenUsers (Long userId,long friendId){
-            List<Expense> expenses = friendshipRepo.findExpensesBetweenUsers(userId, friendId);
+            List<Expense> expenses = expenseRepo.findExpensesBetweenUsers(userId, friendId);
             double userOwesFriend = 0.0;
             double friendOwesUser = 0.0;
 

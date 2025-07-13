@@ -1,9 +1,13 @@
 package com.cartApp.Lowes.service;
 
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.InternetAddressEditor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +20,26 @@ public class SendEmailService {
     private String fromEmailId;
 
     public  void sendEmail(String recipient , String subject , String body){
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom(fromEmailId);
-        simpleMailMessage.setTo(recipient);
-        simpleMailMessage.setText(body);
-        simpleMailMessage.setSubject(subject);
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(recipient);
+            helper.setSubject(subject);
+            helper.setText(body, true);
 
-        javaMailSender.send(simpleMailMessage);
+            // Handle UnsupportedEncodingException
+            try {
+                helper.setFrom(new InternetAddress("expensesyncsuppport@gmail.com", "ExpenseSync Support"));
+            } catch (java.io.UnsupportedEncodingException e) {
+                // Fallback: just set the email without display name
+                helper.setFrom("expensesyncsuppport@gmail.com");
+            }
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle or rethrow as needed
+        }
     }
 
 }

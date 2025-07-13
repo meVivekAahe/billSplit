@@ -38,7 +38,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const handleAddFriend = async (friendData) => {
     try {
-      const response = await fetch('/api/friends/addFriend', {
+      const response = await fetch('/api/users/addFriend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,11 +103,8 @@ const App = () => {
                 { id: 2, name: 'College Friends', members: 6, balance: 8.75 },
                 { id: 3, name: 'Roommates', members: 3, balance: -5.00 }
             ]);
-            setFriends([
-                { id: 1, name: 'Alice', avatar: 'A', balance: 20.50 },
-                { id: 2, name: 'Bob', avatar: 'B', balance: -15.00 },
-                { id: 3, name: 'Charlie', avatar: 'C', balance: 0.00 }
-            ]);
+            // Start with empty friends array
+            setFriends([]);
             setBalances({ total: 12.50, owe: 45.25, owed: 32.75 });
         } catch (error) {
             console.error('Error loading data:', error);

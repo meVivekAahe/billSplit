@@ -33,7 +33,7 @@ public class User implements Serializable{
     private Set<Group>groupMember = new HashSet<>();
     
     
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "participants")
     @JsonBackReference
     private Set<Expense> expenses = new HashSet<>();
 
